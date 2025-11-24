@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Sentiment Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f6fa;
+        }
+
+        .card {
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 32px;
+            letter-spacing: -0.5px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-5">
+        <div class="text-center mb-4">
+            <h2 class="header-title">YouTube Sentiment Analyzer</h2>
+            <p class="text-muted">Analyze Indonesian sentiment using Indonesian RoBERTa Base Sentiment Classifier
+                (w11wo/indonesian-roberta-base-sentiment-classifier)</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} text-center">{{ message }}</div>
+        {% endfor %}
+        {% endwith %}
+
+        <div class="card p-4 mx-auto" style="max-width: 750px;">
+            <form method="POST" action="/">
+
+                <h5 class="fw-bold">Analyze YouTube Comments</h5>
+                <label class="form-label mt-2">YouTube URL or Video ID</label>
+                <input type="text" class="form-control" name="video_input"
+                    placeholder="https://www.youtube.com/watch?v=xxxxxxx or video ID">
+
+                <hr>
+
+                <h5 class="fw-bold">Or Paste Manual Comments</h5>
+                <label class="form-label mt-2">One comment per line</label>
+                <textarea class="form-control" name="comments_textarea" rows="5"
+                    placeholder="Comment 1&#10;Comment 2&#10;Comment 3"></textarea>
+
+                <hr>
+
+                <label class="form-label fw-bold">Max Comments to Analyze</label>
+                <select name="max_comments" class="form-select mb-3">
+                    <option value="20">20</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                </select>
+
+                <button class="btn btn-primary w-100 py-2">
+                    Analyze Sentiment
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
