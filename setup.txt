@@ -16,6 +16,11 @@ set FLASK_SECRET=some-secret
 === INSTALL TRANSFORMERS
 pip install torch transformers
 
+python -m pip install google-api-python-client
+
+python -m pip install pandas
+python -m pip install xlsxwriter
+
 === RUN TEST.PY
 python test.py
 

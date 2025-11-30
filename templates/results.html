@@ -14,29 +14,25 @@
             border-radius: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.07);
         }
-        .badge-positive { background:#27ae60; }
-        .badge-neutral { background:#7f8c8d; }
-        .badge-negative { background:#c0392b; }
-
-        /* Scrollable section for comments */
-        .scroll-panel {
-            max-height: 480px;
+        .badge-positive { background:#27ae60 !important; }
+        .badge-neutral { background:#7f8c8d !important; }
+        .badge-negative { background:#c0392b !important; }
+        .scroll-box {
+            max-height: 500px;
             overflow-y: auto;
         }
-
     </style>
 </head>
 
 <body>
 <div class="container py-4">
 
-    <!-- HEADER -->
     <div class="text-center mb-4">
         <h2 class="fw-bold">Sentiment Analysis Results</h2>
         <p class="text-muted">Source: {{ source }}</p>
     </div>
 
-    <!-- SUMMARY CARD -->
+    <!-- Summary Card -->
     <div class="card p-4 mb-4">
         <h4 class="fw-bold">Summary</h4>
 
@@ -64,8 +60,8 @@
 
         <hr>
 
-        <!-- OVERALL CONCLUSION -->
-        <h4 class="fw-bold mt-3">Overall Conclusion</h4>
+        <!-- Overall Conclusion -->
+        <h4 class="fw-bold mt-3">Overall Conclusion:</h4>
 
         {% if summary.positive > summary.negative and summary.positive > summary.neutral %}
             <div class="alert alert-success">Overall sentiment is POSITIVE ({{ summary.positive_pct }}%)</div>
@@ -76,29 +72,36 @@
         {% else %}
             <div class="alert alert-secondary">Overall sentiment is NEUTRAL ({{ summary.neutral_pct }}%)</div>
         {% endif %}
-
     </div>
 
-    <!-- TWO-COLUMN LAYOUT -->
+
+    <!-- TWO COLUMN LAYOUT -->
     <div class="row g-4">
 
-        <!-- LEFT: PIE CHART -->
+        <!-- Pie Chart -->
         <div class="col-md-4">
             <div class="card p-4 h-100">
-                <h5 class="fw-bold mb-3">Sentiment Distribution</h5>
-                <canvas id="sentimentChart" height="200"></canvas>
+                <h5 class="fw-bold mb-3">Sentiment Chart</h5>
+                <canvas id="sentimentChart" height="250"></canvas>
             </div>
         </div>
 
-        <!-- RIGHT: DETAIL COMMENTS -->
-        <div class="col-md-8">
+        <!-- Detailed Comments -->
+        <div class="col-md-8 h-100">
             <div class="card p-4 h-100">
-                <h5 class="fw-bold">Detailed Comments</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold">Detailed Comments</h4>
 
-                <div class="scroll-panel mt-3">
+                    <!-- EXPORT BUTTONS -->
+                    <div>
+                        <a href="/export/csv" class="btn btn-outline-primary btn-sm">CSV</a>
+                        <a href="/export/excel" class="btn btn-outline-success btn-sm">Excel</a>
+                    </div>
+                </div>
 
+                <div class="table-responsive mt-3 scroll-box">
                     <table class="table table-striped align-middle">
-                        <thead class="table-light">
+                        <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Comment</th>
@@ -110,7 +113,7 @@
                         {% for r in results %}
                             <tr>
                                 <td>{{ loop.index }}</td>
-                                <td style="width: 55%;">{{ r.text }}</td>
+                                <td>{{ r.text }}</td>
                                 <td>
                                     {% if r.label == 'positive' %}
                                         <span class="badge badge-positive">Positive</span>
@@ -125,20 +128,20 @@
                         {% endfor %}
                         </tbody>
                     </table>
-
                 </div>
+
             </div>
         </div>
 
     </div>
 
-    <div class="text-center mt-4">
-        <a href="/" class="btn w-100 btn-secondary">Back</a>
-    </div>
 
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-secondary">Back</a>
+    </div>
 </div>
 
-<!-- PIE CHART SCRIPT -->
+
 <script>
     new Chart(document.getElementById("sentimentChart"), {
         type: "pie",
